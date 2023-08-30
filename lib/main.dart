@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:voice_recorder/voice_app.dart';
 //Comment
 void main() {
-  runApp(const MaterialApp(home: Text("Welcome to Voice Recorder App!")));
+  runApp(const VoiceApp());
 }
