@@ -38,6 +38,7 @@ dependencies:
   go_router: ^10.1.2
   microphone: ^0.1.0
   just_audio: ^0.9.34
+  google_fonts: ^4.0.4
 
 dev_dependencies:
   flutter_test:
