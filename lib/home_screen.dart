@@ -5,7 +5,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: SizedBox(
           width: double.infinity,
@@ -13,9 +13,10 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.mic,
-                  size: 100,
+                IconButton(
+                  icon: const Icon(Icons.mic),
+                  onPressed: () {},
+                  iconSize: 100,
                 )
               ],
             ),
