@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-
-class HomeScreen extends StatelessWidget {
+import 'package:flutter_sound/flutter_sound.dart';
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final recorder = FlutterSoundRecorder();
   @override
   Widget build(context) {
     return Scaffold(
@@ -13,12 +19,16 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  icon: const Icon(Icons.mic),
-                  onPressed: () {
-                    
-                  },
-                  iconSize: 100,
+                Ink(
+                  decoration: const ShapeDecoration(shape: CircleBorder(),
+                  color:  Color.fromARGB(203, 221, 247, 222)),
+                  child: IconButton(
+                    icon: Icon(recorder.isRecording ? Icons.stop : Icons.mic),
+                    onPressed: () {
+                
+                    },
+                    iconSize: 100,
+                  ),
                 )
               ],
             ),

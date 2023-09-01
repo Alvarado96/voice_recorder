@@ -16,10 +16,11 @@ class _VoiceAppState extends State<VoiceApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: ThemeData(
+        bottomAppBarTheme: const BottomAppBarTheme(color: Color.fromRGBO(96, 125, 139, 1)),
+        canvasColor: const Color.fromARGB(218, 218, 227, 251),
         textTheme: GoogleFonts.robotoTextTheme(),
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.blueGrey
-          
+          primarySwatch: Colors.blueGrey, 
         )
       ),
       title: "Voice Recorder",
