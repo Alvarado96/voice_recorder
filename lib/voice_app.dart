@@ -15,6 +15,7 @@ class _VoiceAppState extends State<VoiceApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         bottomAppBarTheme: const BottomAppBarTheme(color: Color.fromRGBO(96, 125, 139, 1)),
         canvasColor: const Color.fromARGB(218, 218, 227, 251),
