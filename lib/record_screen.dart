@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
 
@@ -10,7 +11,7 @@ class RecordScreen extends StatefulWidget {
 
 class _RecordScreenState extends State<RecordScreen> {
   final recorder = FlutterSoundRecorder();
-
+  var isRecording = false;
   @override
   void initState() {
     super.initState();
@@ -24,14 +25,12 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Future initRecorder() async {
-
     final status = await Permission.microphone.request();
-    if(status != PermissionStatus.granted) {
+    if (status != PermissionStatus.granted) {
       //openAppSettings();
       throw "Microphone permission not granted";
     }
     await recorder.openRecorder();
-
   }
 
   Future record() async {
@@ -48,34 +47,34 @@ class _RecordScreenState extends State<RecordScreen> {
       body: Center(
         child: SizedBox(
           width: double.infinity,
-          
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Ink(
-                  decoration: const ShapeDecoration(shape: CircleBorder(),
-                  color:  Color.fromARGB(203, 221, 247, 222)),
-                  child: IconButton(
-                    icon: Icon(recorder.isRecording ? Icons.stop : Icons.mic),
-                    onPressed: () async {
-                      if(recorder.isRecording) {
-                        await stop();
-                      } else {
-                        await record();
-                      }
-                      setState(() {
-                        
-                      });
-                    },
-                    iconSize: 100,
-                  ),
-                )
-              ],
-            ),
-          
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Ink(
+                decoration: ShapeDecoration(
+                    shape: const CircleBorder(),
+                    color: isRecording
+                        ? const Color.fromARGB(201, 244, 60, 51)
+                        : const Color.fromARGB(202, 8, 147, 239)),
+                child: IconButton(
+                  icon: Icon(recorder.isRecording ? Icons.stop : Icons.mic),
+                  onPressed: () async {
+                    if (recorder.isRecording) {
+                      await stop();
+                    } else {
+                      await record();
+                    }
+                    setState(() {
+                      isRecording = !isRecording;
+                    });
+                  },
+                  iconSize: 100,
+                ),
+              )
+            ],
+          ),
         ),
       ),
-      
     );
   }
 }
