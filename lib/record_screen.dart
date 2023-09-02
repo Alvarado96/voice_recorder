@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class RecordScreen extends StatefulWidget {
+  const RecordScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<RecordScreen> createState() => _RecordScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _RecordScreenState extends State<RecordScreen> {
   final recorder = FlutterSoundRecorder();
 
   @override
