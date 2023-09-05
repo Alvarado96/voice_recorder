@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+
+String completePath = "";
+String directoryPath = "";
 
 class RecordScreen extends StatefulWidget {
   const RecordScreen({super.key});
@@ -32,23 +37,69 @@ class _RecordScreenState extends State<RecordScreen> {
       //openAppSettings();
       throw "Microphone permission not granted";
     }
+    final statusStorage = await Permission.storage.status;
+    if(!statusStorage.isGranted){
+      await Permission.storage.request();
+    }
     await recorder.openRecorder();
+    directoryPath = await _directoryPath();
+    completePath = await _completePath(directoryPath);
+    _createDirectory();
+    _createFile();
     isRecorderReady = true;
     recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
 
   Future record() async {
     if (!isRecorderReady) return;
-    await recorder.startRecorder(toFile: 'audio');
+    print("Path where the file will be : "+completePath);
+    await recorder.startRecorder(toFile: completePath);
   }
 
   Future stop() async {
     if (!isRecorderReady) return;
 
     final path = await recorder.stopRecorder();
-    final audioFile = File(path!);
+    final audioFile = File(completePath);
 
     print('Recorded audio: $audioFile');
+  }
+
+  Future<String> _completePath(String directory) async {
+    var fileName = _fileName();
+    return "$directory$fileName";
+  }
+
+  Future<String> _directoryPath() async {
+    //var directory = await getExternalStorageDirectory();
+    var directory = Directory("/storage/emulated/0/Download");
+
+    var directoryPath = directory.path;
+    return "$directoryPath/audio/";
+  }
+
+  Future _createFile() async {
+    File(completePath)
+      .create(recursive: true)
+      .then((File file) async {
+        Uint8List bytes = await file.readAsBytes();
+        file.writeAsBytes(bytes);
+        print("FILE CREATED AT : " + file.path);
+      });
+  }
+
+  Future _createDirectory() async {
+    bool isDirectoryCreated = await Directory(directoryPath).exists();
+    if(!isDirectoryCreated) {
+      Directory(directoryPath).create()
+        .then((Directory directory) {
+          print("DIRECTORY CREATED at : " + directory.path);
+        });
+    }
+  }
+
+  String _fileName() {
+    return "record.wav";
   }
 
   @override
