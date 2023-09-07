@@ -16,12 +16,14 @@ class RecordScreen extends StatefulWidget {
 }
 
 class _RecordScreenState extends State<RecordScreen> {
+  String currentFileName = "";
   final recorder = FlutterSoundRecorder();
   bool isRecorderReady = false;
   var isRecording = false;
   @override
   void initState() {
     super.initState();
+    //currentFileName = _fileName(); //you dont want to call this here cuz it creates an empty file
     initRecorder();
   }
 
@@ -38,21 +40,24 @@ class _RecordScreenState extends State<RecordScreen> {
       throw "Microphone permission not granted";
     }
     final statusStorage = await Permission.storage.status;
-    if(!statusStorage.isGranted){
+    if (!statusStorage.isGranted) {
       await Permission.storage.request();
     }
     await recorder.openRecorder();
     directoryPath = await _directoryPath();
     completePath = await _completePath(directoryPath);
     _createDirectory();
-    _createFile();
+    //_createFile();
     isRecorderReady = true;
     recorder.setSubscriptionDuration(const Duration(milliseconds: 500));
   }
 
   Future record() async {
     if (!isRecorderReady) return;
-    print("Path where the file will be : "+completePath);
+    currentFileName = _fileName();
+    completePath = await _completePath(directoryPath);
+    setState(() {}); // Trigger a rebuild to update the displayed filename
+    print("Path where the file will be : $completePath");
     await recorder.startRecorder(toFile: completePath);
   }
 
@@ -66,8 +71,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   Future<String> _completePath(String directory) async {
-    var fileName = _fileName();
-    return "$directory$fileName";
+    return "$directory$currentFileName";
   }
 
   Future<String> _directoryPath() async {
@@ -75,33 +79,39 @@ class _RecordScreenState extends State<RecordScreen> {
     //var directory = Directory("/storage/emulated/0/Download");
     var directory = Directory("/storage/emulated/0/Download");
 
-
     var directoryPath = directory.path;
     return "$directoryPath/audio/";
   }
 
-  Future _createFile() async {
-    File(completePath)
-      .create(recursive: true)
-      .then((File file) async {
-        Uint8List bytes = await file.readAsBytes();
-        file.writeAsBytes(bytes);
-        print("FILE CREATED AT : " + file.path);
-      });
-  }
-
   Future _createDirectory() async {
     bool isDirectoryCreated = await Directory(directoryPath).exists();
-    if(!isDirectoryCreated) {
-      Directory(directoryPath).create()
-        .then((Directory directory) {
-          print("DIRECTORY CREATED at : " + directory.path);
-        });
+    if (!isDirectoryCreated) {
+      Directory(directoryPath).create().then((Directory directory) {
+        print("DIRECTORY CREATED at : " + directory.path);
+      });
     }
   }
 
+  // Future _createFile() async {
+  //   File(completePath).create(recursive: true).then((File file) async {
+  //     Uint8List bytes = await file.readAsBytes();
+  //     file.writeAsBytes(bytes);
+  //     print("FILE CREATED AT : " + file.path);
+  //   });
+  // }
+
   String _fileName() {
-    return "record.wav";
+    final now = DateTime.now();
+    final formattedDate =
+        "${now.year}${_twoDigits(now.month)}${_twoDigits(now.day)}_${_twoDigits(now.hour)}${_twoDigits(now.minute)}${_twoDigits(now.second)}";
+    return "record_$formattedDate.wav";
+  }
+
+  String _twoDigits(int n) {
+    if (n >= 10) {
+      return "$n";
+    }
+    return "0$n";
   }
 
   @override
@@ -119,12 +129,12 @@ class _RecordScreenState extends State<RecordScreen> {
                   final duration = snapshot.hasData
                       ? snapshot.data!.duration
                       : Duration.zero;
-                  
+
                   String twoDigits(int n) => n.toString().padLeft(2, '0');
-                  final twoDigitMinutes = 
+                  final twoDigitMinutes =
                       twoDigits(duration.inMinutes.remainder(60));
                   final twoDigitSeconds =
-                    twoDigits(duration.inSeconds.remainder(60));
+                      twoDigits(duration.inSeconds.remainder(60));
 
                   return Text(
                     '$twoDigitMinutes:$twoDigitSeconds',
