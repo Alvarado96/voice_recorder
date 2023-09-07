@@ -72,7 +72,9 @@ class _RecordScreenState extends State<RecordScreen> {
 
   Future<String> _directoryPath() async {
     //var directory = await getExternalStorageDirectory();
+    //var directory = Directory("/storage/emulated/0/Download");
     var directory = Directory("/storage/emulated/0/Download");
+
 
     var directoryPath = directory.path;
     return "$directoryPath/audio/";
