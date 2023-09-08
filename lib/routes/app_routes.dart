@@ -8,9 +8,9 @@ class AppRoute {
 }
 
 class AppRoutes {
-  static AppRoute category = const AppRoute(name: "category", icon: Icons.category);
+  static AppRoute collections = const AppRoute(name: "collection", icon: Icons.shelves);
   static AppRoute record = const AppRoute(name: "record", icon: Icons.circle);
   static AppRoute favorites = const AppRoute(name: "favorites", icon: Icons.favorite);
 
-  static List<AppRoute> routes = [category, record, favorites];
+  static List<AppRoute> routes = [collections, record, favorites];
 }
