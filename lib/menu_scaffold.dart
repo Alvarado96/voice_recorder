@@ -28,7 +28,7 @@ class MenuScaffoldState extends State<MenuScaffold>{
     );
   }
 
-  Widget _buildBottomAppBar(context) {
+  Widget _buildBottomAppBar(BuildContext context) {
     return SafeArea(
       child: BottomAppBar(
       child: Row(
@@ -38,14 +38,20 @@ class MenuScaffoldState extends State<MenuScaffold>{
         children: widget.routes
                 .map((route) => GestureDetector(
                       key: Key('${route.name}-button'),
-                      onTap: () => context.go('/${route.name}'),
+                      onTap: () {
+                        print("/"+route.name);
+                        context.go('/${route.name}');
+                      },
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Flexible(
                             child: IconButton(
                               icon: Icon(route.icon),
-                              onPressed: () => context.go('/${route.name}'),
+                              onPressed: () {
+                                print("/"+route.name);
+                                context.go('/${route.name}');
+                              },
                               iconSize: 25.0,
                             ),
                           ),

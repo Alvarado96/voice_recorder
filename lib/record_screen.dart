@@ -116,7 +116,7 @@ class _RecordScreenState extends State<RecordScreen> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SizedBox(
