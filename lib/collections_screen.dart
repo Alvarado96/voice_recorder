@@ -16,7 +16,7 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
     return const Scaffold(
       body: Column(
         children: [
-          Text("Welcome to the Collections Screen!")
+          Text("Welcome to the Collections Screen!  Will add collections")
         ],
       ),
     );
