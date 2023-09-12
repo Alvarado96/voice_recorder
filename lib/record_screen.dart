@@ -93,14 +93,6 @@ class _RecordScreenState extends State<RecordScreen> {
     }
   }
 
-  // Future _createFile() async {
-  //   File(completePath).create(recursive: true).then((File file) async {
-  //     Uint8List bytes = await file.readAsBytes();
-  //     file.writeAsBytes(bytes);
-  //     print("FILE CREATED AT : " + file.path);
-  //   });
-  // }
-
   String _fileName() {
     final now = DateTime.now();
     final formattedDate =
