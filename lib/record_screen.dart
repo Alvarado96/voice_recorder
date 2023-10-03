@@ -64,7 +64,7 @@ class _RecordScreenState extends State<RecordScreen> {
 
   Future stop() async {
     if (!isRecorderReady) return;
-
+    
     final path = await recorder.stopRecorder();
     final audioFile = File(completePath);
 
@@ -122,15 +122,21 @@ class _RecordScreenState extends State<RecordScreen> {
                   final duration = snapshot.hasData
                       ? snapshot.data!.duration
                       : Duration.zero;
-
+                  
                   String twoDigits(int n) => n.toString().padLeft(2, '0');
                   final twoDigitMinutes =
                       twoDigits(duration.inMinutes.remainder(60));
                   final twoDigitSeconds =
                       twoDigits(duration.inSeconds.remainder(60));
 
-                  return Text(
+                  return isRecording ? Text(
                     '$twoDigitMinutes:$twoDigitSeconds',
+                    style: const TextStyle(
+                      fontSize: 80,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ) : Text(
+                    '${twoDigits(0)}:${twoDigits(0)}',
                     style: const TextStyle(
                       fontSize: 80,
                       fontWeight: FontWeight.bold,
